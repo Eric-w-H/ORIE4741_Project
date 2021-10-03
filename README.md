@@ -1,2 +1,2 @@
 # ORIE4741_Project
-Eric, Enya, Varun, and Leah
+Eric, Enya eez25, Varun, and Leah
