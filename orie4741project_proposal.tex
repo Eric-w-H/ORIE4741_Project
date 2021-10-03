@@ -1,0 +1,84 @@
+\documentclass[final,oneside,onecolumn]{article}
+\usepackage[body={6in,9.5in},top=0.9in,left=1in,dvips]{geometry}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{paralist}
+\usepackage{floatflt}
+\usepackage{mathtools}
+\usepackage{alltt}
+\usepackage{color}
+\usepackage{hyperref}
+
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{algorithmic}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+\definecolor{string}{rgb}{0.7,0.0,0.0}
+\definecolor{comment}{rgb}{0.13,0.54,0.13}
+\definecolor{keyword}{rgb}{0.0,0.0,1.0}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\matlab}{\textsc{Matlab\;}}
+\newcommand{\grads}{[\text{565 only}]}
+\newcommand{\maple}{\emph{Maple\;}}
+\newcommand{\erf}{\text{erf}}
+\newcommand{\sign}{\text{sign}}
+\newcommand{\lnorm}{\left\|}
+\newcommand{\rnorm}{\right\|}
+\newcommand{\R}{\mathbb{R}}
+
+\begin{document}
+
+\renewcommand{\arraystretch}{0.5}
+
+\title{\begin{tabular*}{5.5in}[h]{l@{\extracolsep\fill}cr}
+{\bf \large ORIE 4741} & {\bf \large Project Proposal} & {\bf \large  Fall 2021} \\
+\end{tabular*}}
+\date{}
+\author{}
+\maketitle
+
+\thispagestyle{empty}
+
+
+\section*{} %%%%%%%%%%%%%%%%%
+\subsection*{Problem Statment}
+The goal of this project is to determine opportunities for growth for a country so a country can make better budgeting decisions. We will look at a country's trading patterns, such as specific imports and exports as a percent of GDP, infrastructure, and education and try to indicate what variables might be preventing the growth of a country. We will compare high GDP countries and others and the trade and economic patterns between countries. Understand what commodities are valuable and how the economy changes over time.
+
+\subsection*{Dataset}
+Data is taken from the World Bank World Development Indicators:\\
+
+\href{https://databank.worldbank.org/source/world-development-indicators}{https://databank.worldbank.org/source/world-development-indicators}\\
+
+The dataset is a list of countries and statistics on the topics Economic Policy, Education, Environment, Financial Sector, Gender, Health, Infrastructure, Poverty, Private Sector \& Trade, Public Sector, Social Protection \& Labor, and Health. Examples of these include debt, imports by percent of GDP, health expenditure per capita, and GINI index. There are a total of 1443 of these variables for the years 1960-2020, but there is missing data; all variables are continuous data. \\
+
+Many countries have missing data, especially as we go further back in time. Because there are many variables in this dataset, we will find which variables are missing with the highest frequency and determine whether they are necessary for answering our questions. There are many variables related to social issues, gender, and health, and these may play less of a role in the economic and financial analysis of the countries. 
+
+%1: [2015, 2020]
+%2: [2009, 2014]
+%3: [2003, 2008]
+
+\subsection*{Methods}
+We plan on using methods to both identify trends in international trade and identify opportunities for economic growth for a country. This includes finding what underlying factors might contribute to the development of a country and identifying the most valuable commodities using regression. The most important features we might predict are rankings of most popular imports and exports, GDP, and other indicators of wealth.
+\\
+
+To identify opportunities for growth, we will use the above strategies to compare our results with the actual statistics specific to each country. From there, we will look at classify the least and most important economic or social factors that might be important to the development of a country. 
+
+%Write about Dataset
+%Ask a question
+%Tell what you will do
+
+%$n$ fold cross validation where each validation set is data for 5 years and the training set will be the years 1960-2015. The test set will be the data for the 2016-2020.
+
+\subsection*{Project Importance}
+This project is important to understanding the dynamics of world development. The results given as a product of this project will be important information for how a country can better utilize its resources to optimize growth. 
+
+
+\end{document}
