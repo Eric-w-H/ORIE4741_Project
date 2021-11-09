@@ -43,13 +43,12 @@ def parse_team(url, team: Tag):
     get_text = np.vectorize(get_text)
 
     data = get_text(np.array(body)).reshape((-1, stepover)).copy()
-    columns = ['Day', 'Date', 'Location', 'Opponent', 'Score',
-               'W/L/T', 'DIVIDER', 'Location', 'Venue', 'Attendance', 'Notes']
+    columns = ['Day', 'Date', 'Home/Away', 'Opponent', 'Score',
+               'W/L/T', 'Overtime', 'Location', 'Venue', 'Attendance', 'Notes']
     data = data[1:]
 
     df = pd.DataFrame(data, columns=columns)
-    df.drop(columns='DIVIDER')
-    df['Home'] = [teamtext]*len(df)
+    df['Team'] = [teamtext]*len(df)
     return df
 
 
@@ -97,7 +96,7 @@ def main():
                     continue
                 break
 
-    df = pd.concat(dataframes)
+    df = pd.concat(dataframes).reindex()
     df.to_csv(filepath)
 
 
