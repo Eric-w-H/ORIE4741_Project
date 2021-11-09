@@ -85,7 +85,17 @@ def main():
     dataframes = []
     years = get_years(urlbase + home)
     for year in years:
-        dataframes.append(parse_year(urlbase, year, delay=3))
+        if(int(year.string) < 2021):
+            tries = 3
+            while tries: # Retry if we get oserrors
+                try:
+                    dataframes.append(parse_year(urlbase, year, delay=3))
+                except OSError as err:
+                    print("[**!] ERROR " + err + ", retrying...")
+                    time.sleep(2)
+                    tries -= 1
+                    continue
+                break
 
     df = pd.concat(dataframes)
     df.to_csv(filepath)
