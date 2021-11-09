@@ -49,6 +49,7 @@ def parse_team(url, team: Tag):
 
     df = pd.DataFrame(data, columns=columns)
     df['Team'] = [teamtext]*len(df)
+    df['Team Code'] = [teamurl[7:].split('.')[0]]*len(df)
     return df
 
 
