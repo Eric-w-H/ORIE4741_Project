@@ -49,7 +49,10 @@ def parse_team(url, team: Tag):
 
     df = pd.DataFrame(data, columns=columns)
     df['Team'] = [teamtext]*len(df)
-    df['Team Code'] = [teamurl[7:].split('.')[0]]*len(df)
+    if 'nfl' in teamurl:
+        df['Team Code'] = [teamurl[7:].split('.')[0]]*len(df)
+    else:
+        df['Team Code'] = [teamurl[8:].split('.')[0]]*len(df)
     return df
 
 
@@ -87,7 +90,7 @@ def main():
     for year in years:
         if(int(year.string) < 2021):
             tries = 3
-            while tries: # Retry if we get oserrors
+            while tries:  # Retry if we get oserrors
                 try:
                     dataframes.append(parse_year(urlbase, year, delay=3))
                 except OSError as err:
@@ -97,6 +100,7 @@ def main():
                     continue
                 break
 
+    print('[*] Writing output to ' + filepath)
     df = pd.concat(dataframes).reindex()
     df.to_csv(filepath)
 
