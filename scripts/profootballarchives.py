@@ -91,7 +91,7 @@ def main():
                 try:
                     dataframes.append(parse_year(urlbase, year, delay=3))
                 except OSError as err:
-                    print("[**!] ERROR " + err + ", retrying...")
+                    print("[**!] ERROR " + str(err) + ", retrying...")
                     time.sleep(2)
                     tries -= 1
                     continue
