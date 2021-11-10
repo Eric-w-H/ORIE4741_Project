@@ -13,6 +13,15 @@ def get_random_delay(delay=3):
     return np.abs(np.random.normal(delay, delay)) + delay
 
 
+def url_to_code(url):
+    if 'nfl' in url:
+        return url[7:].split('.')[0]
+    elif 'apfa' in url:
+        return url[8:].split('.')[0]
+    else:
+        return url[4:].split('.')[0]
+
+
 def get_years(url):
     print("[*] Getting years index")
     response = requests.get(url)
@@ -49,10 +58,17 @@ def parse_team(url, team: Tag):
 
     df = pd.DataFrame(data, columns=columns)
     df['Team'] = [teamtext]*len(df)
-    if 'nfl' in teamurl:
-        df['Team Code'] = [teamurl[7:].split('.')[0]]*len(df)
-    else:
-        df['Team Code'] = [teamurl[8:].split('.')[0]]*len(df)
+
+    # Handle the different home team urls differently
+    df['Team Code'] = [url_to_code(teamurl)]*len(df)
+
+    # Get the away team codes
+    away_urls = soup.find_all('a')
+    opponent_code = []
+    for team_url in away_urls:
+        opponent_code.append(url_to_code(team_url['href']))
+
+    df['Opponent Code'] = opponent_code
     return df
 
 
@@ -72,7 +88,6 @@ def parse_year(url, year: Tag, delay=3):
     for link in links:
         time.sleep(get_random_delay(delay))
         dataframes.append(parse_team(url, link))
-
     return pd.concat(dataframes)
 
 
