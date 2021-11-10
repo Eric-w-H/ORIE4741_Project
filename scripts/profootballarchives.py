@@ -88,7 +88,7 @@ def parse_year(url, year: Tag, delay=3):
     for link in links:
         time.sleep(get_random_delay(delay))
         dataframes.append(parse_team(url, link))
-    return pd.concat(dataframes)
+    return pd.concat(dataframes).reindex()
 
 
 def main():
