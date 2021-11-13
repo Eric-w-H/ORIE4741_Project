@@ -7,6 +7,7 @@ from requests.models import Response
 from requests.sessions import Request
 import pandas as pd
 import numpy as np
+import json
 
 
 def get_random_delay(delay=3):
@@ -31,12 +32,7 @@ def get_years(url):
     return years
 
 
-def parse_team(url, team: Tag):
-    teamurl = team['href']
-    teamtext = team.get_text()
-    print('[***] Processing %s' % teamtext)
-
-    response = requests.get(url + teamurl)
+def scores(response):
     soup = BeautifulSoup(response.text, "html.parser",
                          parse_only=SoupStrainer(attrs={'id': 'scores'}))
 
@@ -57,10 +53,6 @@ def parse_team(url, team: Tag):
     data = data[1:]
 
     df = pd.DataFrame(data, columns=columns)
-    df['Team'] = [teamtext]*len(df)
-
-    # Handle the different home team urls differently
-    df['Team Code'] = [url_to_code(teamurl)]*len(df)
 
     # Get the away team codes
     away_urls = soup.find_all('a')
@@ -70,6 +62,50 @@ def parse_team(url, team: Tag):
 
     df['Opponent Code'] = opponent_code
     return df
+
+
+def stats(response):
+    soup = BeautifulSoup(response.text, "html.parser",
+                         parse_only=SoupStrainer(attrs={'id': 'stats'}))
+
+    def has_title(tag: Tag): return tag.has_attr('title')
+
+    stats_dict = dict()
+    tables = soup.find_all("table")
+    for table in tables:
+        try:
+            category = table.tr.th.string
+
+            titles = table.find_all(has_title)
+            title_list = [title.get_text() for title in titles]
+
+            data_list = list()
+            data = table.find_all(class_='career')
+            for line in data:
+                data_list.append([elem.string for elem in line.children])
+            stats_dict[category] = [title_list, data_list]
+        except:
+            continue
+    return stats_dict
+
+
+def parse_team(url, team: Tag):
+    teamurl = team['href']
+    teamtext = team.get_text()
+    print('[***] Processing %s' % teamtext)
+
+    response = requests.get(url + teamurl)
+
+    score_df = scores(response)
+    stats_dict = stats(response)
+
+    score_df['Team'] = [teamtext]*len(score_df)
+
+    # Handle the different home team urls differently
+    team_code = url_to_code(teamurl)
+    score_df['Team Code'] = [team_code]*len(score_df)
+
+    return score_df, team_code, stats_dict
 
 
 def parse_year(url, year: Tag, delay=3):
@@ -85,29 +121,39 @@ def parse_year(url, year: Tag, delay=3):
     links = soup.find_all("a")
 
     dataframes = []
+    stats_agg = dict()
     for link in links:
         time.sleep(get_random_delay(delay))
-        dataframes.append(parse_team(url, link))
-    return pd.concat(dataframes).reindex()
+        df, team, dct = parse_team(url, link)
+        dataframes.append(df)
+        stats_agg[team] = dct
+
+    return pd.concat(dataframes).reindex(), {yeartext: stats_agg}
 
 
 def main():
     urlbase = """https://www.profootballarchives.com/"""
     home = "nfl.html"
 
-    filename = "matches.csv"
+    matches_filename = "matches.csv"
+    stats_filename = "stats.json"
     path = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
-    filepath = os.path.join(path, filename)
-    filepath = os.path.normpath(filepath)
+
+    stats_filepath = os.path.join(path, stats_filename)
+    matches_filepath = os.path.join(path, matches_filename)
+    matches_filepath = os.path.normpath(matches_filepath)
 
     dataframes = []
+    stats = []
     years = get_years(urlbase + home)
     for year in years:
         if(int(year.string) < 2021):
             tries = 3
             while tries:  # Retry if we get oserrors
                 try:
-                    dataframes.append(parse_year(urlbase, year, delay=3))
+                    frame, stat = parse_year(urlbase, year, delay=1)
+                    dataframes.append(frame)
+                    stats.append(stat)
                 except OSError as err:
                     print("[**!] ERROR " + str(err) + ", retrying...")
                     time.sleep(2)
@@ -115,9 +161,14 @@ def main():
                     continue
                 break
 
-    print('[*] Writing output to ' + filepath)
+    print('[*] Writing matches to ' + matches_filepath)
     df = pd.concat(dataframes).reindex()
-    df.to_csv(filepath)
+    df.to_csv(matches_filepath)
+
+    print('[*] Writing stats to ' + stats_filepath)
+    json_stats = json.dumps({k: v for d in stats for k, v in d.items()})
+    with open(stats_filepath, 'w+') as stats_file:
+        stats_file.write(json_stats)
 
 
 if(__name__ == "__main__"):
