@@ -14,13 +14,9 @@ def get_random_delay(delay=3):
     return np.abs(np.random.normal(delay, delay)) + delay
 
 
-def url_to_code(url):
-    if 'nfl' in url:
-        return url[7:].split('.')[0]
-    elif 'apfa' in url:
-        return url[8:].split('.')[0]
-    else:
-        return url[4:].split('.')[0]
+def url_to_code(teamurl, leagueurl):
+    base_len = len(leagueurl.split('.')[0])
+    return teamurl.split('.')[0][base_len:]
 
 
 def get_years(url):
@@ -32,7 +28,7 @@ def get_years(url):
     return years
 
 
-def scores(response):
+def scores(response, leagueurl):
     soup = BeautifulSoup(response.text, "html.parser",
                          parse_only=SoupStrainer(attrs={'id': 'scores'}))
 
@@ -47,7 +43,8 @@ def scores(response):
     def get_text(elem): return elem.get_text().strip()
     get_text = np.vectorize(get_text)
 
-    data = get_text(np.array(body)).reshape((-1, stepover)).copy()
+    data = get_text(np.array(body, dtype=np.object)
+                    ).reshape((-1, stepover)).copy()
     columns = ['Day', 'Date', 'Home/Away', 'Opponent', 'Score',
                'W/L/T', 'Overtime', 'Location', 'Venue', 'Attendance', 'Notes']
     data = data[1:]
@@ -58,7 +55,7 @@ def scores(response):
     away_urls = soup.find_all('a')
     opponent_code = []
     for team_url in away_urls:
-        opponent_code.append(url_to_code(team_url['href']))
+        opponent_code.append(url_to_code(team_url['href'], leagueurl))
 
     df['Opponent Code'] = opponent_code
     return df
@@ -77,32 +74,33 @@ def stats(response):
             category = table.tr.th.string
 
             titles = table.find_all(has_title)
-            title_list = [title.get_text() for title in titles]
+            title_list = ['Totals'] + [title.get_text() for title in titles]
 
             data_list = list()
             data = table.find_all(class_='career')
             for line in data:
-                data_list.append([elem.string for elem in line.children])
-            stats_dict[category] = [title_list, data_list]
+                data_list.append(
+                    {title: elem.string for title, elem in zip(title_list, line.children)})
+            stats_dict[category] = data_list
         except:
             continue
     return stats_dict
 
 
-def parse_team(url, team: Tag):
+def parse_team(url, team: Tag, leagueurl):
     teamurl = team['href']
     teamtext = team.get_text()
     print('[***] Processing %s' % teamtext)
 
     response = requests.get(url + teamurl)
 
-    score_df = scores(response)
+    score_df = scores(response, leagueurl)
     stats_dict = stats(response)
 
     score_df['Team'] = [teamtext]*len(score_df)
 
     # Handle the different home team urls differently
-    team_code = url_to_code(teamurl)
+    team_code = url_to_code(teamurl, leagueurl)
     score_df['Team Code'] = [team_code]*len(score_df)
 
     return score_df, team_code, stats_dict
@@ -124,7 +122,7 @@ def parse_year(url, year: Tag, delay=3):
     stats_agg = dict()
     for link in links:
         time.sleep(get_random_delay(delay))
-        df, team, dct = parse_team(url, link)
+        df, team, dct = parse_team(url, link, yearurl)
         dataframes.append(df)
         stats_agg[team] = dct
 
@@ -151,7 +149,7 @@ def main():
             tries = 3
             while tries:  # Retry if we get oserrors
                 try:
-                    frame, stat = parse_year(urlbase, year, delay=1)
+                    frame, stat = parse_year(urlbase, year, delay=1.1)
                     dataframes.append(frame)
                     stats.append(stat)
                 except OSError as err:

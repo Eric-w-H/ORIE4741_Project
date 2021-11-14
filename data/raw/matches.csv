@@ -230,7 +230,7 @@
 8,Sun,12/4/1921,A,Louisville Brecks,6-0,W,,"Louisville, KY",Eclipse Park,,,lou,Columbus Panhandles,col
 0,Sun,10/16/1921,A,Buffalo All-Americans,0-55,L,,"Buffalo, NY",Canisius Villa,7500,,buf,New York Giants,ny
 1,Sat,12/3/1921,H,Cleveland Tigers,0-17,L,,"New York, NY",Polo Grounds,3000,,cle,New York Giants,ny
-2,Sat,12/10/1921,A,Orange A.C.,,,,"Orange, NJ",Ashland Field,,Postponed from 11/26,ora,New York Giants,ny
+2,Sat,12/10/1921,A,Orange A.C.,,,,"Orange, NJ",Ashland Field,,Postponed from 11/26,,New York Giants,ny
 0,Sun,10/2/1921,A,Evansville Crimson Giants,0-21,L,,"Evansville, IN",Bosse Field,1500,,eva,Louisville Brecks,lou
 1,Sun,12/4/1921,H,Columbus Panhandles,0-6,L,,"Louisville, KY",Eclipse Park,,,col,Louisville Brecks,lou
 0,Sun,10/9/1921,A,Evansville Crimson Giants,0-14,L,,"Evansville, IN",Bosse Field,,,eva,Muncie Flyers,mun
@@ -6803,7 +6803,7 @@
 12,Sat,12/10/1966,A,Baltimore Colts,14-10,W,,"Baltimore, MD",Memorial Stadium,60238,,bal,Green Bay Packers,gb
 13,Sun,12/18/1966,A,Los Angeles Rams,27-23,W,,"Los Angeles, CA",Memorial Coliseum,72416,,larm,Green Bay Packers,gb
 14,Sun,1/1/1967,A,Dallas Cowboys,34-27,W,,"Dallas, TX",Cotton Bowl,74152,League Championship,dal,Green Bay Packers,gb
-15,Sun,1/15/1967,H,Kansas City Chiefs,35-10,W,,"Los Angeles, CA",Memorial Coliseum,61946,Super Bowl I,aflkc,Green Bay Packers,gb
+15,Sun,1/15/1967,H,Kansas City Chiefs,35-10,W,,"Los Angeles, CA",Memorial Coliseum,61946,Super Bowl I,kc,Green Bay Packers,gb
 0,Sat,9/10/1966,A,Green Bay Packers,3-24,L,,"Milwaukee, WI",County Stadium,48650,,gb,Baltimore Colts,bal
 1,Sun,9/18/1966,A,Minnesota Vikings,38-23,W,,"Bloomington, MN",Metropolitan Stadium,47426,,min,Baltimore Colts,bal
 2,Sun,9/25/1966,H,San Francisco 49ers,36-14,W,,"Baltimore, MD",Memorial Stadium,56715,,sf,Baltimore Colts,bal
@@ -7076,7 +7076,7 @@
 13,Sun,12/17/1967,H,Pittsburgh Steelers,17-24,L,,"Green Bay, WI",Lambeau Field,50861,,pit,Green Bay Packers,gb
 14,Sat,12/23/1967,H,Los Angeles Rams,28-7,W,,"Milwaukee, WI",County Stadium,49861,Western Conference Championship,larm,Green Bay Packers,gb
 15,Sun,12/31/1967,H,Dallas Cowboys,21-17,W,,"Green Bay, WI",Lambeau Field,50861,League Championship,dal,Green Bay Packers,gb
-16,Sun,1/14/1968,A,Oakland Raiders,33-14,W,,"Miami, FL",Orange Bowl,75546,Super Bowl II,afloak,Green Bay Packers,gb
+16,Sun,1/14/1968,A,Oakland Raiders,33-14,W,,"Miami, FL",Orange Bowl,75546,Super Bowl II,oak,Green Bay Packers,gb
 0,Sun,9/17/1967,A,Pittsburgh Steelers,13-41,L,,"Pittsburgh, PA",Pitt Stadium,53365,,pit,Chicago Bears,chib
 1,Sun,9/24/1967,A,Green Bay Packers,10-13,L,,"Green Bay, WI",Lambeau Field,50861,,gb,Chicago Bears,chib
 2,Sun,10/1/1967,A,Minnesota Vikings,17-7,W,,"Bloomington, MN",Metropolitan Stadium,44868,,min,Chicago Bears,chib
@@ -7250,7 +7250,7 @@
 13,Sun,12/15/1968,A,Los Angeles Rams,28-24,W,,"Los Angeles, CA",Memorial Coliseum,69397,,larm,Baltimore Colts,bal
 14,Sun,12/22/1968,H,Minnesota Vikings,24-14,W,,"Baltimore, MD",Memorial Stadium,60238,Western Conference Championship,min,Baltimore Colts,bal
 15,Sun,12/29/1968,A,Cleveland Browns,34-0,W,,"Cleveland, OH",Cleveland Stadium,78410,League Championship,cle,Baltimore Colts,bal
-16,Sun,1/12/1969,H,New York Jets,7-16,L,,"Miami, FL",Orange Bowl,75389,Super Bowl III,aflnyj,Baltimore Colts,bal
+16,Sun,1/12/1969,H,New York Jets,7-16,L,,"Miami, FL",Orange Bowl,75389,Super Bowl III,nyj,Baltimore Colts,bal
 0,Mon,9/16/1968,A,St. Louis Cardinals,24-13,W,,"St. Louis, MO",Busch Memorial Stadium,49757,,stl,Los Angeles Rams,larm
 1,Sun,9/22/1968,H,Pittsburgh Steelers,45-10,W,,"Los Angeles, CA",Memorial Coliseum,49647,,pit,Los Angeles Rams,larm
 2,Sun,9/29/1968,A,Cleveland Browns,24-6,W,,"Cleveland, OH",Cleveland Stadium,82514,,cle,Los Angeles Rams,larm
@@ -7538,7 +7538,7 @@
 13,Sun,12/21/1969,A,Atlanta Falcons,3-10,L,,"Atlanta, GA",Atlanta-Fulton County Stadium,52872,,atl,Minnesota Vikings,min
 14,Sat,12/27/1969,H,Los Angeles Rams,23-20,W,,"Bloomington, MN",Metropolitan Stadium,47900,Western Conference Championship,larm,Minnesota Vikings,min
 15,Sun,1/4/1970,H,Cleveland Browns,27-7,W,,"Bloomington, MN",Metropolitan Stadium,46503,League Championship,cle,Minnesota Vikings,min
-16,Sun,1/11/1970,A,Kansas City Chiefs,7-23,L,,"New Orleans, LA",Tulane Stadium,80562,Super Bowl IV,aflkc,Minnesota Vikings,min
+16,Sun,1/11/1970,A,Kansas City Chiefs,7-23,L,,"New Orleans, LA",Tulane Stadium,80562,Super Bowl IV,kc,Minnesota Vikings,min
 0,Sun,9/21/1969,A,Pittsburgh Steelers,13-16,L,,"Pittsburgh, PA",Pitt Stadium,51360,,pit,Detroit Lions,det
 1,Sun,9/28/1969,H,New York Giants,24-0,W,,"Detroit, MI",Tiger Stadium,54358,,nyg,Detroit Lions,det
 2,Sun,10/5/1969,A,Cleveland Browns,28-21,W,,"Cleveland, OH",Cleveland Stadium,82933,,cle,Detroit Lions,det
