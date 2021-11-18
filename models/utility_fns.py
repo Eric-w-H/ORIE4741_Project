@@ -1,22 +1,17 @@
+import numpy as np
 import pandas as pd
 from collections import deque
 
-def form_last_n_games(df: pd.DataFrame, n:int, cols_to_grab=['Class'], lookup_cols=['Team Code']):
+
+def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_cols=['Team Code']):
     """
     Requires that the input df is sorted such that old elements are at the top,
     e.g. `df = df.sort_values(by='Date', ascending=True)`
     """
-    progress = widgets.IntProgress(
-        value=0,
-        min=0,
-        max=len(df) + 1,
-        description='Processing:',
-        bar_style='',  # 'success', 'info', 'warning', 'danger' or ''
-        style={'bar_color': 'green'},
-        orientation='horizontal'
-    )
 
-    display(progress)
+    steps = np.linspace(0, len(df), num=50, dtype=int)
+    step_idx = 0
+    itercount = 0
 
     result = df.copy()
 
@@ -25,8 +20,8 @@ def form_last_n_games(df: pd.DataFrame, n:int, cols_to_grab=['Class'], lookup_co
     new_df = pd.DataFrame(columns=new_columns)
 
     lookup_dict = {}
-    progress.value += 1
     for index, row in df.iterrows():
+        itercount += 1
         to_drop = False
         append_row = pd.Series(index=new_columns, name=index)
         for lookup in lookup_cols:
@@ -47,6 +42,9 @@ def form_last_n_games(df: pd.DataFrame, n:int, cols_to_grab=['Class'], lookup_co
             result.drop(index, inplace=True)
         else:
             new_df = new_df.append(append_row)
-        progress.value += 1
+
+        if itercount > steps[step_idx]:
+            step_idx += 1
+            print(end='.')
 
     return pd.concat([result, new_df], axis=1), new_columns
