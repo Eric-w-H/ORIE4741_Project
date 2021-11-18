@@ -48,3 +48,19 @@ def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_c
             print(end='.')
 
     return pd.concat([result, new_df], axis=1), new_columns
+
+
+def potential_winnings_from_bid(bid, odds):
+    if odds > 0:
+        return bid * odds
+    return bid * odds/100
+
+
+def net_change_from_bid(bid, odds, won):
+    if won:
+        return potential_winnings_from_bid(bid, odds)
+    return -bid
+
+
+def payout_from_bid(bid, odds, won):
+    return net_change_from_bid(bid, odds, won) + bid
