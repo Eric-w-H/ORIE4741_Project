@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 from collections import deque
+from numba import jit
 
-
+@jit
 def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_cols=['Team Code']):
     """
     Requires that the input df is sorted such that old elements are at the top,
@@ -49,18 +50,18 @@ def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_c
 
     return pd.concat([result, new_df], axis=1), new_columns
 
-
+@jit
 def potential_winnings_from_bid(bid, odds):
     if odds > 0:
         return bid * odds
     return bid * odds/100
 
-
+@jit
 def net_change_from_bid(bid, odds, won):
     if won:
         return potential_winnings_from_bid(bid, odds)
     return -bid
 
-
+@jit
 def payout_from_bid(bid, odds, won):
     return net_change_from_bid(bid, odds, won) + bid
