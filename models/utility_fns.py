@@ -5,6 +5,7 @@ from numba import jit
 from pandas.core.frame import DataFrame
 from sklearn import model_selection
 from sklearn.utils.fixes import threadpool_info
+from sys import stdout
 
 
 @jit
@@ -50,8 +51,8 @@ def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_c
 
         if itercount > steps[step_idx]:
             step_idx += 1
-            print(end='.')
-
+            stdout.write('.')
+    print('\n Done')
     return pd.concat([result, new_df], axis=1), new_columns
 
 
@@ -74,12 +75,11 @@ def payout_from_bid(bid, odds, won):
     return net_change_from_bid(bid, odds, won) + bid
 
 
-def make_train_val_test(X: np.ndarray, y: np.ndarray, train_pct: float, val_pct: float):
-    train_val_pct = train_pct + val_pct
-    test_pct = 1 - train_val_pct
+def make_train_val_test(X: np.ndarray, y: np.ndarray, test_pct: float, val_pct: float, random_state=0):
+    train_val_pct = 1 - test_pct
 
     X_train, X_test, y_train, y_test = model_selection.train_test_split(
-        X.to_numpy(), y.to_numpy(), test_size=test_pct, random_state=0
+        X, y, test_size=test_pct, random_state=random_state
     )
 
     X_train, X_val, y_train, y_val = model_selection.train_test_split(
