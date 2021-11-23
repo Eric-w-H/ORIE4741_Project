@@ -8,7 +8,6 @@ from sklearn.utils.fixes import threadpool_info
 from sys import stdout
 
 
-@jit
 def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_cols=['Team Code']):
     """
     Requires that the input df is sorted such that old elements are at the top,
