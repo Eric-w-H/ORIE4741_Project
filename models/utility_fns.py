@@ -7,6 +7,7 @@ from sklearn import model_selection
 from sklearn.utils.fixes import threadpool_info
 from sys import stdout
 
+
 def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_cols=['Team Code']):
     """
     Requires that the input df is sorted such that old elements are at the top,
@@ -35,9 +36,13 @@ def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_c
             if len(last_n) < n:
                 to_drop = True
             else:
-                append_cols = [
-                    lookup + '_' + ''.join(['p']*(prev+1)) + '_' + col for col in cols_to_grab for prev in range(n)]
-                append_row[append_cols] = [elem for r in last_n for elem in r]
+                for prev in range(n):
+                    for col in cols_to_grab:
+                        append_row[lookup + '_' +
+                                   ''.join(['p']*(prev+1)) + '_' + col] = last_n[prev][col]
+                    # append_cols = [
+                    #     lookup + '_' + ''.join(['p']*(prev+1)) + '_' + col for col in cols_to_grab for prev in range(n)]
+                    # append_row[append_cols] = [elem for r in last_n for elem in r[cols_to_grab]]
 
             last_n.appendleft(row[cols_to_grab])
             lookup_dict[lkup_key] = last_n
