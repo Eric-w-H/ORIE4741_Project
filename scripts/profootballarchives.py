@@ -11,7 +11,7 @@ import json
 
 
 def get_random_delay(delay=3):
-    return np.abs(np.random.normal(delay, delay)) + delay
+    return np.abs(np.random.normal(delay, 1)) + 1.2
 
 
 def url_to_code(teamurl, leagueurl):
@@ -72,9 +72,10 @@ def stats(response):
     for table in tables:
         try:
             category = table.tr.th.string
+            print(f'[****] Gathering {category}')
 
             titles = table.find_all(has_title)
-            title_list = ['Totals'] + [title.get_text() for title in titles]
+            title_list = ['Totals'] + [title['title'] for title in titles]
 
             data_list = list()
             data = table.find_all(class_='career')
@@ -83,6 +84,7 @@ def stats(response):
                     {title: elem.string for title, elem in zip(title_list, line.children)})
             stats_dict[category] = data_list
         except:
+            print(f'[***!] Skipping...')
             continue
     return stats_dict
 
