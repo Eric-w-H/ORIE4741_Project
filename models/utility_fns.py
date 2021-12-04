@@ -59,22 +59,17 @@ def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_c
     return pd.concat([result, new_df], axis=1), new_columns
 
 
-@jit
-def potential_winnings_from_bid(bid, odds):
-    if odds > 0:
-        return bid * odds
-    return bid * odds/100
+def potential_winnings_from_bid(bid: np.ndarray, odds: np.ndarray):
+    fraction = np.where(odds > 0, odds / 100 - 1, -100 / odds)
+    return bid * fraction
 
 
-@jit
-def net_change_from_bid(bid, odds, won):
-    if won:
-        return potential_winnings_from_bid(bid, odds)
-    return -bid
+def net_change_from_bid(bid: np.ndarray, odds: np.ndarray, won: np.ndarray):
+    potentials = potential_winnings_from_bid(bid, odds)
+    return np.where(won, potentials, -bid)
 
 
-@jit
-def payout_from_bid(bid, odds, won):
+def payout_from_bid(bid: np.ndarray, odds: np.ndarray, won: np.ndarray):
     return net_change_from_bid(bid, odds, won) + bid
 
 
