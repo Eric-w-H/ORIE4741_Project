@@ -20,7 +20,7 @@ def form_last_n_games(df: pd.DataFrame, n: int, cols_to_grab=['Class'], lookup_c
 
     result = df.copy()
 
-    cols_to_grab += [filter_col]
+    cols_to_grab = cols_to_grab.copy() + [filter_col]
     new_columns = [lookup + '_' + ''.join(['p']*(prev+1)) + '_' +
                    col for col in cols_to_grab for prev in range(n) for lookup in lookup_cols]
     new_df = pd.DataFrame(columns=new_columns)
